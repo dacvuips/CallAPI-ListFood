@@ -4,7 +4,7 @@ const listfood = new ListFood
 const getEle = (id) => document.getElementById(id);
 
 const fetch = () => {
-    listfood.getAPI()
+    listfood.callAPI(`foods`, 'GET', null)
         .then((arr) => {
             let resp = arr.data
 
@@ -92,10 +92,10 @@ const themFood = () => {
 
     const foods = new Food("", tenMon, loaiMon, giaMon, giaKhuyenMai, tinhTrang, hinhMon, moTa)
 
-    console.log(hinhMon)
+    console.log(foods)
 
 
-    listfood.postAPI(foods)
+    listfood.callAPI(`foods`, "POST", foods)
         .then(() => {
 
             fetch()
@@ -117,7 +117,7 @@ const deleteMon = async(id) => {
 
 
     try {
-        await listfood.deleteAPI(id)
+        await listfood.callAPI(`foods/${id}`, "DELETE", null)
         fetch()
 
     } catch (error) {
@@ -152,7 +152,7 @@ getEle("tbodyFood").addEventListener('click', (event) => {
 window.deleteMon = deleteMon;
 
 const showUpdate = async(id) => {
-    let getIDFood = await listfood.getIdAPI(id)
+    let getIDFood = await listfood.callAPI(`foods/${id}`, "GET", null)
     getEle('foodID').value = getIDFood.data.id || "";
     getEle('tenMon').value = getIDFood.data.tenMon || "";
     getEle('loai').value = getIDFood.data.loaiMon || "";
@@ -190,14 +190,14 @@ const updateFood = async(id) => {
 
 
 
-    listfood.getIdAPI(id)
+    listfood.callAPI(`foods/${id}`, "GET", null)
         .then((resp) => {
 
             if (!foods.hinhMon) {
                 foods.hinhMon = resp.data.hinhMon;
-                console.log(foods)
+
             }
-            listfood.updateFoodAPI(foods, id)
+            listfood.callAPI(`foods/${id}`, "PUT", foods)
                 .then(() => {
 
                     fetch()
@@ -217,7 +217,7 @@ window.updateFood = updateFood;
 
 
 getEle("selLoai").addEventListener('change', (event) => {
-    listfood.getAPI()
+    listfood.callAPI(`foods`, 'GET', null)
         .then((arr) => {
             let resp = arr.data
             let value = event.target.value;
@@ -263,7 +263,7 @@ getEle("selLoai").addEventListener('change', (event) => {
 });
 
 getEle("page").addEventListener('click', (event) => {
-    listfood.getAPI()
+    listfood.callAPI(`foods`, 'GET', null)
         .then((arr) => {
             let resp = arr.data
             let value = event.target.innerHTML;
