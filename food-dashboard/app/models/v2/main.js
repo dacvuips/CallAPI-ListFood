@@ -313,3 +313,31 @@ getEle("page").addEventListener('click', (event) => {
         })
 
 });
+
+getEle("search").addEventListener('keyup', async() => {
+
+    let type = getEle("search").value.trim().toLowerCase();
+
+
+    let search = [];
+    try {
+        let reps = await listfood.callAPI("foods", 'GET', null)
+
+
+        let searchs = reps.data.filter((value) => {
+            if ((value.tenMon.trim().toLowerCase().indexOf(type) !== -1) || (value.moTa.trim().toLowerCase().indexOf(type) !== -1)) {
+                return value
+
+            }
+        });
+
+
+        renderHTML(searchs)
+
+
+    } catch (error) {
+        console.log("lỗi")
+
+    }
+
+})
